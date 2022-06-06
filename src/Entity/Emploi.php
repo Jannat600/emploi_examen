@@ -27,7 +27,7 @@ class Emploi
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emplois')]
     private $user;
 
-    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Jour::class)]
+    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Jour::class, cascade: [ 'remove'])]
     private $jour;
 
     #[ORM\OneToOne(targetEntity: Semestre::class, cascade: ['persist', 'remove'])]
@@ -36,9 +36,18 @@ class Emploi
     #[ORM\ManyToOne(targetEntity: AnneeUniv::class, inversedBy: 'emplois')]
     private $annee_univ;
 
+    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Seance::class, cascade: [ 'remove'])]
+    private $seances;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $updated_at;
+
+
+
     public function __construct()
     {
         $this->jour = new ArrayCollection();
+        $this->seances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,4 +156,47 @@ class Emploi
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): self
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances[] = $seance;
+            $seance->setEmploi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): self
+    {
+        if ($this->seances->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getEmploi() === $this) {
+                $seance->setEmploi(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
 }

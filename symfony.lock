@@ -89,6 +89,12 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "easycorp/easyadmin-bundle": {
+        "version": "4.2",
+        "recipe": {
+            "version": "3.0"
+        }
+    },
     "egulias/email-validator": {
         "version": "3.1.2"
     },
@@ -348,6 +354,9 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.25.0"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.25.0"
+    },
     "symfony/process": {
         "version": "v6.1.0"
     },
@@ -441,6 +450,9 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/uid": {
+        "version": "v6.1.0"
+    },
     "symfony/validator": {
         "version": "6.1",
         "recipe": {
@@ -508,6 +520,9 @@
     },
     "symfony/yaml": {
         "version": "v6.1.0"
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.10.0"
     },
     "twig/extra-bundle": {
         "version": "v3.4.0"

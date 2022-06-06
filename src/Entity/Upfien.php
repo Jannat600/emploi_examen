@@ -127,4 +127,10 @@ class Upfien
 
         return $this;
     }
+    public function __toString()
+    {
+        $n= $this->nom;
+        $p= $this->prenom;
+        return $n.$p;
+    }
 }

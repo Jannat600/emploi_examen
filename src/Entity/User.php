@@ -6,11 +6,14 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements PasswordAuthenticatedUserInterface
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,8 +26,12 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $role;
+    #[ORM\Column(type: 'json')]
+    private $roles = [];
+    
+   
+    #[ORM\Column(type: "string", length:180, unique:true)]
+    private $email;
 
     #[ORM\OneToOne(targetEntity: Upfien::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -54,6 +61,7 @@ class User implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
 
     public function getPassword(): ?string
     {
@@ -67,22 +75,53 @@ class User implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getEmail(): ?string
     {
-        return $this->role;
+        return $this->email;
     }
 
-    public function setRole(?string $role): self
+    public function setEmail(string $email): self
     {
-        $this->role = $role;
+        $this->email = $email;
 
         return $this;
     }
+
+    /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_VIEWER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
 
     public function getUpfien(): ?Upfien
     {
         return $this->upfien;
     }
+    
 
     public function setUpfien(Upfien $upfien): self
     {
@@ -120,4 +159,25 @@ class User implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+  
 }

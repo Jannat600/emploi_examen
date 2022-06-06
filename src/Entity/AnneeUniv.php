@@ -87,4 +87,12 @@ class AnneeUniv
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $a = $this->annee_debut->format('H:i');
+        $b =' - ' ;
+        $c= $this->annee_fin->format('H:i');
+        return $a.$b.$c;
+    }
 }

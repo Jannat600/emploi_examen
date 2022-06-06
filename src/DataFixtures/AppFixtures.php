@@ -63,7 +63,8 @@ class AppFixtures extends Fixture
             $users[$i]->setUsername($faker->username);
             $users[$i]->setPassword($faker->password);
             $users[$i]->setUpfien($upfiens[$i]);
-            $users[$i]->setRole('admin');
+            $users[$i]->setEmail($faker->email);
+            $users[$i]->setRoles(['ROLE_VIEWER']);
             
             $manager->persist($users[$i]);
         }

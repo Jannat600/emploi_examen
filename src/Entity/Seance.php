@@ -13,7 +13,7 @@ class Seance
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToOne(targetEntity: Module::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Module::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private $module;
 
@@ -22,6 +22,15 @@ class Seance
 
     #[ORM\ManyToOne(targetEntity: Salle::class)]
     private $salle;
+
+    #[ORM\ManyToOne(targetEntity: Upfien::class)]
+    private $professeur;
+
+    #[ORM\ManyToOne(targetEntity: Emploi::class, inversedBy: 'seances')]
+    private $emploi;
+
+    #[ORM\ManyToOne(targetEntity: Jour::class, inversedBy: 'seances')]
+    private $jour;
 
     public function getId(): ?int
     {
@@ -60,6 +69,42 @@ class Seance
     public function setSalle(?Salle $salle): self
     {
         $this->salle = $salle;
+
+        return $this;
+    }
+
+    public function getProfesseur(): ?Upfien
+    {
+        return $this->professeur;
+    }
+
+    public function setProfesseur(?Upfien $professeur): self
+    {
+        $this->professeur = $professeur;
+
+        return $this;
+    }
+
+    public function getEmploi(): ?Emploi
+    {
+        return $this->emploi;
+    }
+
+    public function setEmploi(?Emploi $emploi): self
+    {
+        $this->emploi = $emploi;
+
+        return $this;
+    }
+
+    public function getJour(): ?Jour
+    {
+        return $this->jour;
+    }
+
+    public function setJour(?Jour $jour): self
+    {
+        $this->jour = $jour;
 
         return $this;
     }

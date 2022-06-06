@@ -115,4 +115,12 @@ class Horaire
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $a = $this->debut->format('H:i');
+        $b =' : ' ;
+        $c= $this->fin->format('H:i');
+        return $a.$b.$c;
+    }
 }

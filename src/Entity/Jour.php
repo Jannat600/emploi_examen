@@ -24,9 +24,13 @@ class Jour
     #[ORM\ManyToOne(targetEntity: Emploi::class, inversedBy: 'jour')]
     private $emploi;
 
+    #[ORM\OneToMany(mappedBy: 'jour', targetEntity: Seance::class, cascade: ['persist', 'remove'])]
+    private $seances;
+
     public function __construct()
     {
         $this->horaires = new ArrayCollection();
+        $this->seances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,5 +87,39 @@ class Jour
         $this->emploi = $emploi;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): self
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances[] = $seance;
+            $seance->setJour($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): self
+    {
+        if ($this->seances->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getJour() === $this) {
+                $seance->setJour(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->nom_jour;
     }
 }
