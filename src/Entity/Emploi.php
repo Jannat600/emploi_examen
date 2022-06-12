@@ -27,7 +27,7 @@ class Emploi
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emplois')]
     private $user;
 
-    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Jour::class, cascade: [ 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Jour::class, cascade: ['persist', 'remove'])]
     private $jour;
 
     #[ORM\OneToOne(targetEntity: Semestre::class, cascade: ['persist', 'remove'])]
@@ -36,7 +36,7 @@ class Emploi
     #[ORM\ManyToOne(targetEntity: AnneeUniv::class, inversedBy: 'emplois')]
     private $annee_univ;
 
-    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Seance::class, cascade: [ 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'emploi', targetEntity: Seance::class, cascade: ['persist', 'remove'])]
     private $seances;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -198,5 +198,8 @@ class Emploi
 
         return $this;
     }
-
+  
+    public function __toString(){
+        return $this->intitule;
+    }
 }

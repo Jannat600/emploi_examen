@@ -1,0 +1,10 @@
+{% if ea.crud.currentAction == 'detail'%}
+<ul class="list-group">
+{%for j in field.value%}
+<li class="list-group-item d-flex justify-content-between align-items">
+{{ j}}
+</li>
+{% endfor %}
+{%else%}
+<span class=" badge badge-secondary">{{ field.value|length }}</span>
+{%endif%}

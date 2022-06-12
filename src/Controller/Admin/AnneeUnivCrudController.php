@@ -2,50 +2,44 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
+use App\Entity\AnneeUniv;
+use App\Entity\Jour;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 
-class UserCrudController extends AbstractCrudController
+class AnneeUnivCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return User::class;
+        return AnneeUniv::class;
     }
 
-   
     public function configureFields(string $pageName): iterable
     {
-        IdField::new('id');
+        IdField::new('id')->hideOnForm();
         return [
-            TextField::new(propertyName:'username', label:'Utilisateur'),
-            EmailField::new(propertyName:'email', label:'Adresse Mail'),
-            ArrayField::new(propertyName:'roles', label:'Role'),
-            CollectionField::new(propertyName:'emplois', label:'Emplois'),
-           
-           
-
+            DateField::new(propertyName:'annee_debut', label:'Début'),
+            DateField::new(propertyName:'annee_fin',label:'Fin')
         ];
     }
-
+    
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters->add('roles');
+        return $filters->add('annee_debut');
+        return $filters->add('annee_fin');
         
     }
+
     public function configureCrud(Crud $crud): Crud
     {
-        
         return $crud
-        ->setEntityLabelInPlural(label: 'Utilisateur')
-        ->setEntityLabelInSingular(label: 'Utilisateurs')
+        ->setEntityLabelInPlural(label: 'Années Universitaires')
+        ->setEntityLabelInSingular(label: 'Année Universitaire')
         ->setDefaultSort(sortFieldsAndOrder:['id'=>'desc']);
 
     }

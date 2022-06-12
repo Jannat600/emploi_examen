@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Seance;
+use App\Repository\EmploiRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -16,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 
 class SeanceCrudController extends AbstractCrudController
 {
@@ -34,16 +36,34 @@ class SeanceCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        IdField::new('id')->hideOnForm();
         return [
-            IdField::new('id')->hideOnForm(),
-            AssociationField::new('module'),
+            AssociationField::new(propertyName:'module', label:'Module'),
             AssociationField::new('horaire'),
-            AssociationField::new('salle'),
-            AssociationField::new('professeur'),
-            AssociationField::new('jour'),
+            AssociationField::new(propertyName:'salle',label:'Salle'),
+            AssociationField::new(propertyName:'professeur', label:'Professeur'),
+            AssociationField::new(propertyName:'emploi', label:'Emploi'),
+            AssociationField::new(propertyName:'jour', label:'Jour')
+           
 
         ];
     }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters->add('intitule');
+        
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+        ->setEntityLabelInPlural(label: 'Séances')
+        ->setEntityLabelInSingular(label: 'Séance')
+        ->setDefaultSort(sortFieldsAndOrder:['id'=>'desc']);
+
+    }
+   
     public function configureActions(Actions $actions ) : Actions 
     {
      $duplicate= Action::new(self::ACTION_DUPLICATE)
@@ -69,11 +89,11 @@ class SeanceCrudController extends AbstractCrudController
         return $this->redirect($url);
 
     }
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        if(!$entityInstance instanceof Seance) return;
-        parent::updateEntity($entityManager, $entityInstance);
+    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    // {
+    //     if(!$entityInstance instanceof Seance) return;
+    //     parent::updateEntity($entityManager, $entityInstance);
         
-    }
+    // }
    
 }

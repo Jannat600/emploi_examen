@@ -47,4 +47,11 @@ class Semestre
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $a = $this->niveau;
+        $b = $this->code;
+        return $a." ".$b;
+    }
 }

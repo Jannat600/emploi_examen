@@ -4,9 +4,10 @@ namespace App\Entity;
 
 use App\Repository\SeanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
-class Seance
+class Seance implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -107,5 +108,10 @@ class Seance
         $this->jour = $jour;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->module;
     }
 }

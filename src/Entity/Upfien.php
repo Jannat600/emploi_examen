@@ -131,6 +131,6 @@ class Upfien
     {
         $n= $this->nom;
         $p= $this->prenom;
-        return $n.$p;
+        return $n." ".$p;
     }
 }

@@ -90,9 +90,9 @@ class AnneeUniv
 
     public function __toString()
     {
-        $a = $this->annee_debut->format('H:i');
+        $a = $this->annee_debut->format('Y');
         $b =' - ' ;
-        $c= $this->annee_fin->format('H:i');
+        $c= $this->annee_fin->format('Y');
         return $a.$b.$c;
     }
 }

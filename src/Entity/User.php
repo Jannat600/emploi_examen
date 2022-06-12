@@ -179,5 +179,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         // $this->plainPassword = null;
     }
 
+    public function __toString()
+    {
+        return $this->username;
+    }
+
   
 }

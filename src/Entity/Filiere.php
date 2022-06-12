@@ -76,5 +76,8 @@ class Filiere
         return $this;
     }
 
-    
+    public function __toString()
+    {
+       return $this-> intitule;
+    }
 }

@@ -149,4 +149,11 @@ class Niveau
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $a = $this->intitule;
+        $b = $this->filiere;
+        return $b." ".$a;
+    }
 }
